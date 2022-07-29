@@ -1,0 +1,109 @@
+{
+    "name": "主线",    
+    "tasks": [   
+        {
+            "id": "0",    
+            "name": "任务1",    
+            "requirements": [],    
+            "conditions": [    
+                {
+                    "name": "苹果",  
+                    "object": "minecraft:apple",   
+                    "count": 1,   
+                    "aux": 0,    
+                    "type": "item"  
+                },
+                {
+                    "name": "僵尸",   
+                    "object": "minecraft:zombie",  
+                    "count": 1,   
+                    "type": "kill"    
+                },
+                {
+                    "name": "木头",   
+                    "object": "minecraft:wood",  
+                    "count": 2,    
+                    "type": "break"  
+                }
+            ],
+            "rewards": [ 
+                {
+                    "name": "金币",  
+                    "count": 100,    
+                    "unit": "个",    
+                    "type": "money"   
+                },
+                {
+                    "name": "附魔钻石剑",   
+                    "object": "minecraft:diamond_sword",  
+                    "count": 1,  
+                    "aux": 1,    
+                    "ench": [    
+                        {
+                            "id": 9,    
+                            "lvl": 3    
+                        }
+                    ],
+                    "lore": [ "钻石剑" ], 
+                    "type": "item"    
+                },
+                {
+                    "cmd": "tell @a hello",
+                    "type": "command"    
+                }
+            ]
+        },
+        {
+            "id": "1",    
+            "name": "任务2",    
+            "requirements": [],    
+            "conditions": [    
+                {
+                    "name": "苹果1",  
+                    "object": "minecraft:apple",   
+                    "count": 1,   
+                    "aux": 0,    
+                    "type": "item"  
+                },
+                {
+                    "name": "僵尸1",   
+                    "object": "minecraft:zombie",  
+                    "count": 1,   
+                    "type": "kill"    
+                },
+                {
+                    "name": "木头1",   
+                    "object": "minecraft:wood",  
+                    "count": 2,    
+                    "type": "break"  
+                }
+            ],
+            "rewards": [ 
+                {
+                    "name": "金币1",  
+                    "count": 100,    
+                    "unit": "个",    
+                    "type": "money"   
+                },
+                {
+                    "name": "附魔钻石剑1",   
+                    "object": "minecraft:diamond_sword",  
+                    "count": 1,  
+                    "aux": 1,    
+                    "ench": [    
+                        {
+                            "id": 9,    
+                            "lvl": 3    
+                        }
+                    ],
+                    "lore": [ "钻石剑1" ], 
+                    "type": "item"    
+                },
+                {
+                    "cmd": "tell @a hello1",
+                    "type": "command"    
+                }
+            ]
+        }
+    ]
+}
