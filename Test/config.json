@@ -1,8 +1,11 @@
 {
-    "version": "1.0.0.0",   
-    "lang": "zh_CN",    
-    "currency": "LLMoney", 
-    "scoreboard": "money",   
-    "daily": 4, 
-    "tasks": [ "task" ,"daily"]    
+    "version": "1.0.0.0",
+    "lang": "zh_CN",
+    "currency": "scoreboard",
+    "scoreboard": "manzubi",
+    "daily": "4",
+    "tasks": [
+        "task",
+        "daily"
+    ]
 }

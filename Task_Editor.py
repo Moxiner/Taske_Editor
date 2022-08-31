@@ -1,13 +1,12 @@
 # 导入模块
-from asyncio import tasks
+from email import message
+from email.message import Message
 from tkinter import END
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 import time
-import tkinter.messagebox
-from tkinter.tix import Tree
-from tokenize import Name
+import tkinter.messagebox 
 from typing import Any
 import json
 import random
@@ -52,7 +51,17 @@ def ReadFile(path) :
     date = file.read()
     file.close()
     return json.loads(date)
-    
+
+def WriteFile(path:str , date:str):
+    '''写入文件'''
+    if date == None:
+        tkinter.messagebox.showerror(title="致命错误" , message="写入值为空，已取消本次写入！")
+    else:
+        file = open(path , mode="w" , encoding='utf-8')
+        date = json.dumps(date, indent = 4, ensure_ascii= False)
+        file.write(date)
+        file.close()
+        print(date)    
 def JudgeMoneyType():
     '''判断经济系统
     :return <bool> -True:LLMoney -False:SCoreboard'''
@@ -102,11 +111,14 @@ def NewFile():
     pass
 
 def ImportFile():
-    '''导入文件的操作'''
+    '''导入文件地址的操作'''
     global FileDir_Path
-    global Config
     FileDir_Path = filedialog.askdirectory()
-    
+    ReadConfig()
+
+
+def ReadConfig():
+    global Config
     Config = ReadFile(f'{FileDir_Path}/config.json')
     DelectEnrty(Config_verson)
     DelectEnrty(Config_lang)
@@ -136,6 +148,7 @@ def Down_SelecMainTask(*arg):
 
 def Down_Task_treevive(*arg):
     global Task
+    global Task_ID 
     if (Task_Treevive.selection()) == ():
         return False
     Task = {}
@@ -149,6 +162,7 @@ def Down_Task_treevive(*arg):
     for item in Tasks["tasks"]:
         if item["id"] == id:
             Task = item
+            Task_ID = item["id"]
 
     TaskConfig_id.insert("end" ,Task["id"])
     TaskConfig_name.insert("end" ,Task["name"])
@@ -159,6 +173,8 @@ def Down_Task_treevive(*arg):
 
 def Down_TaskEdit_conditions_treeview(*arg):
     global Task_conditions
+    global Task_conditions_ID
+
     for item in TaskEdit_conditions_treeview.selection():
         name = TaskEdit_conditions_treeview.item(item,"values")[0]
         _object = TaskEdit_conditions_treeview.item(item,"values")[1]
@@ -170,6 +186,7 @@ def Down_TaskEdit_conditions_treeview(*arg):
                 if item["count"] == int(count):
                     if item["type"] == type:
                         Task_conditions = item
+                        Task_conditions_ID = item["id"]
                         break
     DelectEnrty(TaskEdit_conditions_name)
     DelectEnrty(TaskEdit_conditions_object)
@@ -188,13 +205,18 @@ def Down_TaskEdit_conditions_treeview(*arg):
     TaskEdit_conditions_type.insert("end" ,Task_conditions["type"])
 
 def Down_TaskEdit_rewoards_treeview(*arg):
+    '''
+    按下 任务奖励树状图 时刷新 任务奖励输入区数值
+    '''
     global Task_rewards
+    global Task_rewards_ID
     for item in TaskEdit_rewards_treeview.selection():
         name = TaskEdit_rewards_treeview.item(item,"values")[0]
         _object = TaskEdit_rewards_treeview.item(item,"values")[1]
         count = TaskEdit_rewards_treeview.item(item,"values")[2]
         type = TaskEdit_rewards_treeview.item(item,"values")[3]
     for item in Task["rewards"]:
+        i = i + 1 
         if item["type"] == "command":
             if item["cmd"] == name:
                 Task_rewards = item
@@ -209,6 +231,8 @@ def Down_TaskEdit_rewoards_treeview(*arg):
             if item["name"] == name:
                 if item["count"] == int(count):
                     Task_rewards = item
+                    Task_rewards_ID = i
+
                     break
 
     DelectEnrty(TaskEdit_rewards_name)
@@ -255,23 +279,26 @@ def Down_TaskEdit_rewoards_treeview(*arg):
         TaskEdit_rewards_lore.config(state="disable")
         
 
-
-
-
-
-
-
-
-
-
-
-
-
+def Save_ConfigEdit(*arg):
+    try:
+        Config["version"] = Config_verson.get()
+        Config["lang"] = Config_lang.get()
+        if Config_money.get() == "LLMoney":
+            Config["currency"] = "LLMoney"
+        else:
+            Config["currency"] = "scoreboard"
+        Config["scoreboard"] = Config_money.get()
+        Config["daily"] = Config_daily.get()
+        WriteFile(f"{FileDir_Path}/Config.json" , Config)
+        ReadConfig()
+        Help_.config(text="配置保存成功")
+    except NameError as e:
+            Help_.config(text="请先导入工程文件夹 ")
 
         
 
-    
 
+    
 def OutportFile():
     pass
 def ReOutportFile():
@@ -327,12 +354,16 @@ ConfigEdit_top = ttk.Frame(ConfigEdit_frame)
 ConfigEdit_bottom = ttk.Frame(ConfigEdit_frame)
 Config_verson_label = ttk.Label(ConfigEdit_top ,text="插件版本")
 Config_verson = ttk.Entry(ConfigEdit_top)
+Config_verson.bind("<FocusOut>",Save_ConfigEdit)
 Config_lang_label = ttk.Label(ConfigEdit_top ,text="插件语言")
 Config_lang = ttk.Combobox(ConfigEdit_top , values=["zh_CN","zh_TW","en_US"] ) 
+Config_lang.bind("<FocusOut>",Save_ConfigEdit)
 Config_money_label = ttk.Label(ConfigEdit_bottom ,text="计分板经济")
 Config_money = ttk.Entry(ConfigEdit_bottom) 
+Config_money.bind("<FocusOut>",Save_ConfigEdit)
 Config_daily_label = ttk.Label(ConfigEdit_bottom ,text="每日任务数量")
 Config_daily = ttk.Spinbox(ConfigEdit_bottom , from_=0,to=Any) 
+Config_daily.bind("<FocusOut>",Save_ConfigEdit)
 
 
 ConfigEdit.pack(side="left" ,padx=10)
