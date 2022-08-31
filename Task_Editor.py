@@ -1,5 +1,4 @@
 # 导入模块
-from email import message
 from email.message import Message
 from tkinter import END
 import tkinter as tk
@@ -11,6 +10,8 @@ from typing import Any
 import json
 import random
 import threading
+
+from NewTask import *
 
 
 
@@ -297,7 +298,6 @@ def Save_ConfigEdit(*arg):
 
         
 
-
     
 def OutportFile():
     pass
@@ -394,6 +394,7 @@ MainTask_name = ttk.Entry(MainTaskEdit_left_bottom ,width=18)
 SelectMainTask = ttk.Combobox(MainTaskEdit_left_bottom , text="选择任务" , width=18  )
 SelectMainTask.bind("<<ComboboxSelected>>", Down_SelecMainTask)
 NewMainTask_button = ttk.Button(MainTaskEdit_left_bottom , text="新建任务" , command=DailyTask ,width=18 )
+NewMainTask_button.bind("<ButtonRelease-1>", NewTaskGUI)
 DelMainTask_button = ttk.Button(MainTaskEdit_left_bottom , text="删除任务" , command=DailyTask ,width=18)
 
 Task_Treevive = ttk.Treeview(MainTaskEdit_right , columns=("id" , "name"),show="headings", displaycolumns="#all",height=14)
