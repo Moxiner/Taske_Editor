@@ -1,5 +1,6 @@
 # 导入模块
-from email.message import Message
+import sys
+sys.path.append('')
 from tkinter import END
 import tkinter as tk
 from tkinter import filedialog
@@ -10,9 +11,7 @@ from typing import Any
 import json
 import random
 import threading
-
 from NewTask import *
-
 
 
 # 创建窗口
@@ -171,6 +170,9 @@ def Down_Task_treevive(*arg):
     Update_treevive(TaskEdit_conditions_treeview , Task["conditions"] ,["name" ,"object" , "count" , "type"])
     Update_treevive(TaskEdit_rewards_treeview , Task["rewards"] ,["name" ,"object" , "count" , "type"])
     Help_.config(text="任务导入成功")
+
+def Down_NewTask(*arg):
+    NewTaskGUI(FileDir_Path)
 
 def Down_TaskEdit_conditions_treeview(*arg):
     global Task_conditions
